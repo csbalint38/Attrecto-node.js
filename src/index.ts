@@ -6,6 +6,8 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose'
 
+import router from './router';
+
 const app = express();
 
 app.use(cors({
@@ -17,4 +19,14 @@ app.use(cookieParser());
 
 const server = http.createServer(app);
 
+server.listen(5000, () => {
+    console.log('server is running on port 5000');
+})
+
 const MONGO_URL = 'mongodb+srv://balintcsefalvay:QX9rBS5QtJBuzVoD@cluster0.lnhgqyg.mongodb.net/';
+
+mongoose.Promise = Promise;
+mongoose.connect(MONGO_URL);
+mongoose.connection.on('error', (error: Error) => console.log(error));
+
+app.use('/', router());
